@@ -1,0 +1,68 @@
+
+    <!DOCTYPE html>
+<html lang="ht">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajoute Patisipan</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #d38ef3; padding: 20px; }
+    h1 { color: #333; }
+    form { background: #fff; padding: 30px; border-radius: 18px; max-width: 400px; margin: auto; }
+    label { display: block; margin-top: 10px; }
+    input { width: 100%; padding: 8px; margin-top: 5px; border: 3px solid #4f18a7; border-radius: 4px; }
+    button { margin-top: 15px; padding: 10px 15px; background: #007BFF; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    button:hover { background: #0056b3; }
+    a { display: block; text-align: center; margin-top: 15px; color: #007BFF; }
+  </style>
+</head>
+<body>
+  <a href="connexion.html"><button>Retour</button></a>
+  <h1><center>Ajoute patisipan</center></h1>
+  <form id="studentForm">
+    <label>ID:</label>
+    <input type="text" id="id" required>
+
+    <label>Nom:</label>
+    <input type="text" id="nom" required>
+
+    <label>Prénom:</label>
+    <input type="text" id="prenom" required>
+
+    <label>Email:</label>
+    <input type="email" id="email" required>
+
+    <label>Date:</label>
+    <input type="date" id="date" required>
+
+    <button type="submit">Ajoute</button>
+  </form>
+  <a href="liste.html">Gade lis patisipan yo</a>
+
+  <script>
+    document.getElementById("studentForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      let id = document.getElementById("id").value.trim();
+      let nom = document.getElementById("nom").value.trim();
+      let prenom = document.getElementById("prenom").value.trim();
+      let email = document.getElementById("email").value.trim();
+      let date = document.getElementById("date").value;
+
+      let students = JSON.parse(localStorage.getItem("students")) || [];
+
+      if (students.some(s => s.id === id)) {
+        alert("ID sa deja egziste!");
+        return;
+      }
+
+      students.push({ id, nom, prenom, email, date });
+      localStorage.setItem("students", JSON.stringify(students));
+
+      alert("patisipan ajoute avèk siksè!");
+      window.location.href="Liste.html";
+      this.reset();
+    });
+  </script>
+</body>
+</html>

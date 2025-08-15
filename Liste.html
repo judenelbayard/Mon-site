@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lis patisipan yo</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; }
+    h1 { color: #333; }
+    table { width: 100%; border-collapse: collapse; background: #fff; margin-top: 20px; }
+    th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+    th { background: #007BFF; color: white; }
+    button { padding: 5px 10px; margin: 2px; border: none; border-radius: 4px; cursor: pointer; }
+    .edit { background: #ffc107; color: black; }
+    .delete { background: #dc3545; color: white; }
+    a { display: inline-block; margin-top: 15px; color: #007BFF; }
+  </style>
+</head>
+<body>
+  <h1>lis patisipan yo</h1>
+  <table id="studentTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Email</th>
+        <th>Date</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <a href="ajouter.html">Ajoute yon nouvo patisipan</a>
+
+  <script>
+    function loadStudents() {
+      let students = JSON.parse(localStorage.getItem("students")) || [];
+      let tbody = document.querySelector("#studentTable tbody");
+      tbody.innerHTML = "";
+
+      students.forEach((s, index) => {
+        let row = `
+          <tr>
+            <td>${s.id}</td>
+            <td>${s.nom}</td>
+            <td>${s.prenom}</td>
+            <td>${s.email}</td>
+            <td>${s.date}</td>
+            <td>
+              <button class="edit" onclick="editStudent(${index})">Modifye</button>
+              <button class="delete" onclick="deleteStudent(${index})">Efase</button>
+            </td>
+          </tr>
+        `;
+        tbody.innerHTML += row;
+      });
+    }
+
+    function deleteStudent(index) {
+      let students = JSON.parse(localStorage.getItem("students")) || [];
+      if (confirm("Ou sèten pou efase patisipan sa ?")) {
+        students.splice(index, 1);
+        localStorage.setItem("students", JSON.stringify(students));
+        loadStudents();
+      }
+    }
+
+    function editStudent(index) {
+      let students = JSON.parse(localStorage.getItem("students")) || [];
+      let student = students[index];
+
+      let newNom = prompt("Antre nouvo nom:", student.nom);
+      let newPrenom = prompt("Antre nouvo prenom:", student.prenom);
+      let newEmail = prompt("Antre nouvo email:", student.email);
+      let newDate = prompt("Antre nouvo dat:", student.date);
+
+      if (newNom && newPrenom && newEmail && newDate) {
+        students[index] = { id: student.id, nom: newNom, prenom: newPrenom, email: newEmail, date: newDate };
+        localStorage.setItem("students", JSON.stringify(students));
+        loadStudents();
+      }
+    }
+
+    loadStudents();
+  </script>
+</body>
+</html>
